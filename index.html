@@ -16,13 +16,15 @@ background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
 color:white;
 text-align:center;
 margin:0;
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
 }
 
 .container{
 
-width:400px;
-margin:auto;
-margin-top:30px;
+width:420px;
 background:rgba(255,255,255,0.1);
 padding:25px;
 border-radius:15px;
@@ -33,16 +35,17 @@ input,button{
 
 width:100%;
 padding:12px;
-margin:8px;
+margin:8px 0;
 border-radius:10px;
 border:none;
+font-size:15px;
+
 }
 
 button{
 
 background:#00bcd4;
 color:white;
-font-size:16px;
 cursor:pointer;
 
 }
@@ -61,21 +64,25 @@ background:#ff5252;
 
 .endBtn:hover{
 
-background:#d32f2f;
+background:#c62828;
+
+}
+
+.closeBtn{
+
+background:#607d8b;
+
+}
+
+.closeBtn:hover{
+
+background:#455a64;
 
 }
 
 #qr-reader{
 
 margin-top:15px;
-
-}
-
-.footer{
-
-margin-top:20px;
-font-size:14px;
-opacity:0.7;
 
 }
 
@@ -91,6 +98,14 @@ color:#ff5252;
 
 }
 
+.footer{
+
+margin-top:15px;
+opacity:0.7;
+font-size:13px;
+
+}
+
 </style>
 
 </head>
@@ -98,7 +113,7 @@ color:#ff5252;
 <body>
 
 
-<div class="container">
+<div class="container" id="mainBox">
 
 <h2>University Attendance System</h2>
 
@@ -127,13 +142,28 @@ color:#ff5252;
 </div>
 
 
+<div id="ended" style="display:none">
+
+<h2>Session Ended</h2>
+
+<button class="closeBtn" onclick="closeSystem()">
+
+Close System
+
+</button>
+
+</div>
+
+
 <div id="msg"></div>
+
 
 <div class="footer">
 
 Designed by ICT Department
 
 </div>
+
 
 </div>
 
@@ -144,7 +174,6 @@ Designed by ICT Department
 <source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
 
 </audio>
-
 
 <audio id="errorSound">
 
@@ -157,7 +186,7 @@ Designed by ICT Department
 <script>
 
 
-const scriptURL="https://script.google.com/macros/s/AKfycbzaUJ3bzVbi3hd9E1fkBE1LnZdjzS4le9Ik-AxHeQ9jxlltEEgWo96MJPXnJgwcyLbV/exec";
+const scriptURL="PUT YOUR GOOGLE SCRIPT URL";
 
 
 let html5QrCode;
@@ -182,7 +211,7 @@ course=document.getElementById("course").value;
 group=document.getElementById("group").value;
 
 
-if(!lecturer || !course || !group){
+if(!lecturer||!course||!group){
 
 alert("Enter all data");
 
@@ -226,7 +255,6 @@ function onScanSuccess(decodedText){
 
 if(!sessionActive) return;
 
-
 if(scanLock) return;
 
 
@@ -234,7 +262,6 @@ let studentId=decodedText.trim();
 
 
 if(scannedStudents.has(studentId)){
-
 
 showMsg("Already Registered","error");
 
@@ -273,7 +300,6 @@ scanLock=false;
 
 function sendToSheet(studentId){
 
-
 fetch(scriptURL,{
 
 method:"POST",
@@ -302,11 +328,30 @@ function endSession(){
 sessionActive=false;
 
 
-html5QrCode.stop();
+html5QrCode.stop().then(()=>{
 
 
-showMsg("Session Ended","success");
+document.getElementById("session").style.display="none";
 
+document.getElementById("ended").style.display="block";
+
+
+});
+
+
+}
+
+
+
+function closeSystem(){
+
+
+window.open('','_self');
+
+window.close();
+
+
+document.body.innerHTML="<h2>System Closed</h2>";
 
 }
 
@@ -314,15 +359,11 @@ showMsg("Session Ended","success");
 
 function showMsg(text,type){
 
-
 let msg=document.getElementById("msg");
-
 
 msg.innerHTML=text;
 
-
 msg.className=type;
-
 
 }
 
@@ -333,7 +374,6 @@ function playSuccess(){
 document.getElementById("successSound").play();
 
 }
-
 
 
 function playError(){
