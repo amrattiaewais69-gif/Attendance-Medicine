@@ -2,169 +2,351 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Attendance QR System</title>
-<script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+<title>UEC Attendance System</title>
+
+<script src="https://unpkg.com/html5-qrcode"></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
 <style>
-  *{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-  body{
-    height:100vh;
-    background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    color:#fff;
-  }
-  .container{
-    background: rgba(255,255,255,0.08);
-    backdrop-filter: blur(15px);
-    border-radius:20px;
-    padding:40px 25px;
-    text-align:center;
-    width:90%;
-    max-width:450px;
-    box-shadow:0 8px 25px rgba(0,0,0,0.3);
-  }
-  h1{
-    font-size:28px;
-    font-weight:700;
-    background: linear-gradient(90deg,#00bcd4,#007bff);
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
-    margin-bottom:10px;
-  }
-  h2{color:#fff;font-weight:500;margin-bottom:20px;}
-  input{
-    width:100%;
-    padding:12px 15px;
-    margin:8px 0;
-    border:none;
-    border-radius:12px;
-    background: rgba(255,255,255,0.15);
-    color:#fff;
-    font-size:16px;
-    transition:all 0.3s ease;
-  }
-  input::placeholder{color: rgba(255,255,255,0.7);}
-  input:focus{outline:none;background: rgba(255,255,255,0.25); box-shadow:0 0 10px rgba(0,188,212,0.7);}
-  button{
-    width:100%;
-    padding:14px;
-    margin-top:15px;
-    border:none;
-    border-radius:12px;
-    background: linear-gradient(90deg,#007bff,#00bcd4);
-    color:#fff;
-    font-size:18px;
-    font-weight:600;
-    cursor:pointer;
-    transition:all 0.3s ease;
-  }
-  button:hover{transform:translateY(-2px); box-shadow:0 5px 15px rgba(0,123,255,0.4);}
-  #qr-reader{width:300px;height:300px;margin:20px auto;display:none;}
-  .msg{margin-top:15px;font-weight:600; min-height:24px;}
-  .msg.success{color:#4CAF50;}
-  .msg.error{color:#ff5252;}
-  .info-box{
-    background: rgba(255,255,255,0.1);
-    padding:12px 15px;
-    border-radius:12px;
-    margin-bottom:15px;
-    display:none;
-    text-align:left;
-  }
-  .info-box span{display:block;}
-  .footer{
-    margin-top:20px;
-    font-size:14px;
-    color: rgba(255,255,255,0.6);
-  }
+
+body{
+font-family:Poppins;
+background:linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+color:white;
+text-align:center;
+margin:0;
+}
+
+.container{
+
+width:400px;
+margin:auto;
+margin-top:30px;
+background:rgba(255,255,255,0.1);
+padding:25px;
+border-radius:15px;
+
+}
+
+input,button{
+
+width:100%;
+padding:12px;
+margin:8px;
+border-radius:10px;
+border:none;
+}
+
+button{
+
+background:#00bcd4;
+color:white;
+font-size:16px;
+cursor:pointer;
+
+}
+
+button:hover{
+
+background:#0097a7;
+
+}
+
+.endBtn{
+
+background:#ff5252;
+
+}
+
+.endBtn:hover{
+
+background:#d32f2f;
+
+}
+
+#qr-reader{
+
+margin-top:15px;
+
+}
+
+.footer{
+
+margin-top:20px;
+font-size:14px;
+opacity:0.7;
+
+}
+
+.success{
+
+color:#4CAF50;
+
+}
+
+.error{
+
+color:#ff5252;
+
+}
+
 </style>
+
 </head>
+
 <body>
 
+
 <div class="container">
-  <h1>University of East Capital</h1>
-  <h2>Attendance Recording System</h2>
 
-  <div id="sessionSetup">
-    <input type="text" id="lecturer" placeholder="Enter Lecturer Name" required>
-    <input type="text" id="course" placeholder="Enter Course Name" required>
-    <input type="text" id="group" placeholder="Enter Group" required>
-    <button onclick="startSession()">Start Session</button>
-  </div>
+<h2>University Attendance System</h2>
 
-  <div class="info-box" id="sessionInfo">
-    <span><strong>Lecturer:</strong> <span id="infoLecturer"></span></span>
-    <span><strong>Course:</strong> <span id="infoCourse"></span></span>
-    <span><strong>Group:</strong> <span id="infoGroup"></span></span>
-  </div>
 
-  <div id="qr-reader"></div>
-  <div class="msg" id="msg"></div>
-  <div class="footer">Designed by UEC ICT Department</div>
+<div id="setup">
+
+<input id="lecturer" placeholder="Enter Lecturer Name">
+
+<input id="course" placeholder="Enter Course Name">
+
+<input id="group" placeholder="Enter Group Name">
+
+<button onclick="startSession()">Start Session</button>
+
 </div>
 
+
+<div id="session" style="display:none">
+
+<h3 id="sessionInfo"></h3>
+
+<div id="qr-reader"></div>
+
+<button class="endBtn" onclick="endSession()">End Session</button>
+
+</div>
+
+
+<div id="msg"></div>
+
+<div class="footer">
+
+Designed by ICT Department
+
+</div>
+
+</div>
+
+
+
+<audio id="successSound">
+
+<source src="https://actions.google.com/sounds/v1/cartoon/wood_plank_flicks.ogg">
+
+</audio>
+
+
+<audio id="errorSound">
+
+<source src="https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg">
+
+</audio>
+
+
+
 <script>
-const scriptURL = "https://script.google.com/macros/s/AKfycbzaUJ3bzVbi3hd9E1fkBE1LnZdjzS4le9Ik-AxHeQ9jxlltEEgWo96MJPXnJgwcyLbV/exec"; // ضع هنا رابط Google Apps Script
-let lecturerName = "", courseName = "", groupName = "";
-const msg = document.getElementById("msg");
-const html5QrCode = new Html5Qrcode("qr-reader");
+
+
+const scriptURL="https://script.google.com/macros/s/AKfycbzaUJ3bzVbi3hd9E1fkBE1LnZdjzS4le9Ik-AxHeQ9jxlltEEgWo96MJPXnJgwcyLbV/exec";
+
+
+let html5QrCode;
+
+let lecturer,course,group;
+
+let scanLock=false;
+
+let scannedStudents=new Set();
+
+let sessionActive=false;
+
+
 
 function startSession(){
-  lecturerName = document.getElementById("lecturer").value.trim();
-  courseName = document.getElementById("course").value.trim();
-  groupName = document.getElementById("group").value.trim();
 
-  if(!lecturerName || !courseName || !groupName){
-    msg.textContent = "Enter Lecturer, Course, and Group";
-    msg.className="msg error";
-    return;
-  }
 
-  document.getElementById("sessionSetup").style.display="none";
+lecturer=document.getElementById("lecturer").value;
 
-  document.getElementById("infoLecturer").textContent = lecturerName;
-  document.getElementById("infoCourse").textContent = courseName;
-  document.getElementById("infoGroup").textContent = groupName;
-  document.getElementById("sessionInfo").style.display = "block";
+course=document.getElementById("course").value;
 
-  document.getElementById("qr-reader").style.display="block";
+group=document.getElementById("group").value;
 
-  html5QrCode.start(
-    { facingMode: "environment" },
-    { fps: 10, qrbox: 250 },
-    onScanSuccess
-  ).catch(err => {
-    msg.textContent = "⚠️ Unable to access camera. Please allow permission.";
-    msg.className="msg error";
-    console.error(err);
-  });
+
+if(!lecturer || !course || !group){
+
+alert("Enter all data");
+
+return;
+
 }
+
+
+document.getElementById("setup").style.display="none";
+
+document.getElementById("session").style.display="block";
+
+
+document.getElementById("sessionInfo").innerHTML=
+
+lecturer+"<br>"+course+" - "+group;
+
+
+sessionActive=true;
+
+
+html5QrCode=new Html5Qrcode("qr-reader");
+
+
+html5QrCode.start(
+
+{facingMode:"environment"},
+
+{fps:10,qrbox:250},
+
+onScanSuccess
+
+);
+
+}
+
+
 
 function onScanSuccess(decodedText){
-  saveAttendance(decodedText.trim());
+
+
+if(!sessionActive) return;
+
+
+if(scanLock) return;
+
+
+let studentId=decodedText.trim();
+
+
+if(scannedStudents.has(studentId)){
+
+
+showMsg("Already Registered","error");
+
+playError();
+
+return;
+
 }
 
-function saveAttendance(studentId){
-  const data = {
-    lecturer: lecturerName,
-    course: courseName,
-    group: groupName,
-    student_id: studentId
-  };
 
-  fetch(scriptURL, {
-    method:"POST",
-    mode:"no-cors",
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify(data)
-  });
+scanLock=true;
 
-  msg.textContent = "Saved: " + studentId;
-  msg.className="msg success";
+
+scannedStudents.add(studentId);
+
+
+sendToSheet(studentId);
+
+
+playSuccess();
+
+
+showMsg("Registered: "+studentId,"success");
+
+
+setTimeout(()=>{
+
+scanLock=false;
+
+},2000);
+
+
 }
+
+
+
+function sendToSheet(studentId){
+
+
+fetch(scriptURL,{
+
+method:"POST",
+
+body:JSON.stringify({
+
+lecturer,
+
+course,
+
+group,
+
+student_id:studentId
+
+})
+
+});
+
+}
+
+
+
+function endSession(){
+
+
+sessionActive=false;
+
+
+html5QrCode.stop();
+
+
+showMsg("Session Ended","success");
+
+
+}
+
+
+
+function showMsg(text,type){
+
+
+let msg=document.getElementById("msg");
+
+
+msg.innerHTML=text;
+
+
+msg.className=type;
+
+
+}
+
+
+
+function playSuccess(){
+
+document.getElementById("successSound").play();
+
+}
+
+
+
+function playError(){
+
+document.getElementById("errorSound").play();
+
+}
+
+
+
 </script>
 
+
 </body>
+
 </html>
